@@ -1,0 +1,17 @@
+.login-root {
+    height: 100vh;
+    background: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)),
+        url('/img/DLH.jpg');
+    background-size: cover;
+    background-position: center center;
+
+    .login-buton {
+        border-radius: 7px;
+        border: 1px solid var(--secondary-color);
+        background-color: var(--primary-color);
+        color: white;
+        padding: 7px 20px;
+        font-size: 20px;
+        font-weight: bold;
+    }
+}
