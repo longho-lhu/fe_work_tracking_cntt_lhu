@@ -1,9 +1,7 @@
+@use './auth.scss';
+@use './color.scss';
+@use './animation.scss';
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
-@import '~bootstrap/scss/bootstrap';
-@import './auth.scss';
-@import './color.scss';
-@import './animation.scss';
-
 body {
     font-family: "Roboto", serif;
 }

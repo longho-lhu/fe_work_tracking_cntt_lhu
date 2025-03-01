@@ -1,5 +1,6 @@
 import { useAuth } from "@/context/AuthContext";
 import { useNotification } from "@/context/Notification";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import Form from "react-bootstrap/esm/Form";
 import InputGroup from "react-bootstrap/esm/InputGroup";
@@ -15,13 +16,16 @@ export default function LoginPage() {
     const [loginInfo, setLoginInfo] = useState<TLoginInfo>({ user: '', pwd: '' })
     const { showNoti } = useNotification();
     const { updateToken, updateUser } = useAuth();
+    const router = useRouter();
+
     function handleLogin() {
         if (loginInfo.user == '' || loginInfo.pwd == '') {
             showNoti({ title: 'User or password not found', message: '', type: 'error   ' })
             return;
         }
         updateToken('token-right');
-        updateUser({ id: 123, userCode: '12345', fullName: 'nva' })
+        updateUser({ id: 123, userCode: '12345', fullName: 'nva' });
+        router.push('/')
     }
     function handleKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
         if (event.key === "Enter") {

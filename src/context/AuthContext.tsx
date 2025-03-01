@@ -1,45 +1,45 @@
-'use client';
+"use client";
+
 import { IUserData } from "@/ts/interface";
 import { TUser } from "@/ts/type";
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { createContext, ReactNode, useContext, useEffect, useLayoutEffect, useState } from "react";
 
 const AuthContext = createContext<IUserData | undefined>(undefined);
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<TUser | null>(null);
-    const [token, setToken] = useState<string>('');
-    useEffect(() => {
-        const initToken = localStorage.getItem('wt-accessToken');
-        const initUser = localStorage.getItem('wt-userData');
-        initUser && localStorage.setItem('wt-userData', JSON.stringify(initUser));
-        localStorage.setItem('wt-accessToken', initToken || '');
-    }, [])
-    function updateToken(token: string) {
-        if (token) {
-            setToken(token);
-            localStorage.setItem('wt-accessToken', token);
-        } else {
-            setToken("");
-            localStorage.setItem('wt-accessToken', '');
-        }
+    const [token, setToken] = useState<string>("");
+    const router = useRouter();
+
+    useLayoutEffect(() => {
+        const initToken = localStorage.getItem("wt-accessToken");
+        const initUser = localStorage.getItem("wt-userData");
+        console.log(initToken)
+        setUser(initUser ? JSON.parse(initUser) : null);
+        setToken(initToken || "");
+    }, []);
+
+    function updateToken(newToken: string) {
+        setToken(newToken);
+        localStorage.setItem("wt-accessToken", newToken);
     }
+
     function updateUser(userData: TUser | null) {
-        if (userData !== null) {
-            setUser(userData);
-            localStorage.setItem('wt-userData', JSON.stringify(userData));
-        } else {
-            setUser(null);
-            localStorage.setItem('wt-userData', '');
-        }
+        setUser(userData);
+        localStorage.setItem("wt-userData", userData ? JSON.stringify(userData) : "");
     }
+
     function deleteTokenAndUser() {
-        setToken('')
-        setUser(null)
-        localStorage.setItem('wt-userData', '');
-        localStorage.setItem('wt-accessToken', '');
+        setToken("");
+        setUser(null);
+        localStorage.removeItem("wt-userData");
+        localStorage.removeItem("wt-accessToken");
+        router.push('/auth/login');
     }
+
     return (
-        <AuthContext.Provider value={{ user, updateUser, token, updateToken, deleteTokenAndUser }}>
+        <AuthContext.Provider value={{ user, token, updateUser, updateToken, deleteTokenAndUser }}>
             {children}
         </AuthContext.Provider>
     );
