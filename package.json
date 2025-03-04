@@ -1,6 +1,6 @@
 {
   "name": "fe_work_tracking_cnnt_lhu",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -15,6 +15,7 @@
     "next": "15.1.7",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
+    "react-country-flag": "^3.1.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
     "sass": "^1.85.1"

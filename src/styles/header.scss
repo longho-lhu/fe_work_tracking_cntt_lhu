@@ -1,0 +1,54 @@
+.wt-header-container {
+    height: 70px;
+    background-color: #605daf;
+    color: #fff;
+
+    .wt-logo {
+        height: 50px;
+        width: 150px;
+        background-color: #fff;
+    }
+
+    .wt-search {
+        margin-left: 50px;
+        background-color: #7471b9;
+        padding: 7px 20px;
+        border-radius: 20px;
+
+        .wt-search-input {
+            background-color: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+
+            &::placeholder {
+                color: #fff;
+            }
+        }
+    }
+
+    .wt-bell-wrap {
+        background-color: #7471b9;
+        padding: 8px 8px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+    }
+
+    .ant-select-selector {
+        background-color: #605daf !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+}
+
+// custom antd global
+.wt-lang-item-wrap {
+    .ant-select-item {
+        background-color: #605daf !important;
+    }
+
+    .ant-select-item:not(:first-child) {
+        margin-top: 3px;
+    }
+}
