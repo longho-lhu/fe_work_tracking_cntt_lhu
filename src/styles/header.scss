@@ -40,6 +40,44 @@
         border: none !important;
         box-shadow: none !important;
     }
+
+    .wt-user-dropdown {
+        top: 75px;
+        right: 0;
+        background-color: #fff;
+        width: 150px;
+        border-radius: 5px;
+        border: 1px solid #f5f5f7;
+        box-shadow: 0 2px 30px rgba(147, 151, 152, 0.08);
+        user-select: none;
+
+        .welcome {
+            background-color: #605daf;
+            padding: 10px 20px;
+            font-size: 15px;
+            font-weight: bold;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+
+        }
+
+        .item {
+            cursor: pointer;
+            padding: 10px 20px;
+            color: gray;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+
+            &:hover {
+                background-color: #f5f5f7;
+            }
+
+            &:last-child {
+                border-top: 2px solid #f5f5f7;
+            }
+        }
+    }
 }
 
 // custom antd global

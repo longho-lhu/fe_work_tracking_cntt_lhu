@@ -1,5 +1,6 @@
 import { useAuth } from "@/context/AuthContext";
 import withAuth from "@/hoc/withAuth";
+import BodyPage from "@/layout/body";
 import HeaderLayout from "@/layout/header";
 import Head from "next/head";
 
@@ -14,6 +15,7 @@ const Home = () => {
         <link rel="icon" href="/img/logo256px.jpg" />
       </Head>
       <HeaderLayout />
+      <BodyPage />
     </>
   );
 }

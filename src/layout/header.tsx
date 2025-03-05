@@ -3,14 +3,26 @@ import { UserOutlined } from '@ant-design/icons';
 import { LuBell } from "react-icons/lu";
 import ReactCountryFlag from "react-country-flag";
 import { FaSearch } from "react-icons/fa";
+import UserSettingDropDown from "@/components/layoutComponent/UserDropDownSetting";
+import { useEffect, useState } from "react";
 
 
 const HeaderLayout = () => {
+    const [isOpenSetting, setOpenSetting] = useState<boolean>(false);
+    useEffect(() => {
+        window.addEventListener("click", () => {
+            setOpenSetting(false);
+        });
+    }, [])
     const handleChangeLang = (value: string) => {
         console.log(`change language to ${value}`);
     };
     const handleSearch = (value: string) => {
         console.log('btn search clicked:', value)
+    }
+    const openSetting = (event: any) => {
+        setOpenSetting(prev => !prev);
+        event.stopPropagation();
     }
     return <>
         <div className="wt-header-container d-flex justify-content-between">
@@ -25,7 +37,7 @@ const HeaderLayout = () => {
                     <FaSearch className="ms-1 pointer" onClick={() => { handleSearch((document.getElementById('wtid-search') as HTMLInputElement).value) }} />
                 </div>
             </div>
-            <div className="d-flex gap-4 me-5 align-items-center">
+            <div className="d-flex gap-4 me-5 align-items-center position-relative">
                 <div>
                     <Select
                         defaultValue="vi"
@@ -42,7 +54,8 @@ const HeaderLayout = () => {
                     />
                 </div>
                 <div className="wt-bell-wrap"><LuBell /></div>
-                <Avatar size="large" icon={<UserOutlined />} />
+                <Avatar size="large" icon={<UserOutlined />} onClick={(event) => { openSetting(event) }} className="pointer" />
+                {isOpenSetting && <UserSettingDropDown className="wt-user-dropdown position-absolute" data={{ displayName: "Long" }} />}
             </div>
         </div>
     </>

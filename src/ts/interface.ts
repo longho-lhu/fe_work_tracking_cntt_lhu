@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+import { EBodyMenu } from "./enum";
 import { TNotification, TUser } from "./type";
 
 export interface IUserData {
@@ -9,7 +11,8 @@ export interface IUserData {
 }
 
 export interface IBodyData {
-
+    menuSelected: EBodyMenu,
+    setMenuSelected: Dispatch<SetStateAction<EBodyMenu>>;
 }
 
 export interface INotification {

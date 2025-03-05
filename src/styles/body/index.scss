@@ -1,0 +1,6 @@
+@use './leftSide.scss';
+@use './rightSide.scss';
+
+.wt-body-container {
+  height: calc(100vh - 70px);
+}
