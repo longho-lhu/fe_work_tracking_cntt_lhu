@@ -20,10 +20,14 @@ export default function DashboarView() {
           </div>
         </div>
         <div className="col-3">
-          <div style={{ backgroundColor: '#fff' }}>
+
+          <div className="" style={{ backgroundColor: '#fff', borderRadius: 5 }}>
             <DoughnutChart />
           </div>
-          <div style={{ backgroundColor: '#fff' }}>
+
+
+          <div className="mt-3 py-3 position-relative" style={{ backgroundColor: '#fff', borderRadius: 5 }}>
+            <div className="mb-3 ms-3">Đã hoàn thành </div>
             <ProgressBar value1={10} value2={80} />
           </div>
         </div>

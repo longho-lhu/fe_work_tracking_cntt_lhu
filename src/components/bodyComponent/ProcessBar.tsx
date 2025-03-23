@@ -1,10 +1,10 @@
 const ProgressBar = ({ value1, value2 }: { value1: number; value2: number }) => {
   const total = value1 + value2;
   const percent1 = total > 0 ? (value1 / total) * 100 : 0; // Tránh chia cho 0
-  const percent2 = 100 - percent1; // Phần còn lại
+  const percent2 = 100 - percent1;
 
   return (
-    <div className="progress-container">
+    <div className="progress-container px-3">
       <div className="progress-bar-container">
         <div
           className="progress-bar"
