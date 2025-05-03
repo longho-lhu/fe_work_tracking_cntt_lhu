@@ -1,4 +1,5 @@
 export enum EBodyMenu {
+  ST_DASHBOARD,
   DASHBOARD,
   LIST_INTERN,
   CALENDAR

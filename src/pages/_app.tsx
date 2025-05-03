@@ -1,3 +1,4 @@
+import '@ant-design/v5-patch-for-react-19';
 import AuthProvider from "@/context/AuthContext";
 import type { AppProps } from "next/app";
 import '@/styles/main.scss'
