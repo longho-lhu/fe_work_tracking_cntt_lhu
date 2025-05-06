@@ -18,3 +18,14 @@ export interface IBodyData {
 export interface INotification {
     showNoti: ({ title, message, type }: TNotification) => void;
 }
+
+export interface DataProjectType {
+    id: number;
+    name: string;
+    owner: string;
+    assignTo: string;
+    status: string;
+    start: string;
+    end: string;
+    trackingTime: number;
+}

@@ -7,7 +7,7 @@ import { createContext, ReactNode, useContext, useEffect, useState } from "react
 const BodyContext = createContext<IBodyData | undefined>(undefined);
 
 const BodyProvider = ({ children }: { children: ReactNode }) => {
-    const [menuSelected, setMenuSelected] = useState<EBodyMenu>(EBodyMenu.DASHBOARD);
+    const [menuSelected, setMenuSelected] = useState<EBodyMenu>(EBodyMenu.ST_DASHBOARD);
     return (
         <BodyContext.Provider value={{ menuSelected, setMenuSelected }}>
             {children}
