@@ -1,11 +1,14 @@
 import { useAuth } from "@/context/AuthContext";
 import { useNotification } from "@/context/Notification";
+import axiosCustom from "@/services/axiosCustom";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Form from "react-bootstrap/esm/Form";
 import InputGroup from "react-bootstrap/esm/InputGroup";
 import { FaUser } from "react-icons/fa";
 import { IoIosEyeOff, IoMdEye } from "react-icons/io";
+import { jwtDecode } from "jwt-decode";
+import { TUser } from "@/ts/type";
 
 type TLoginInfo = {
     user: string;
@@ -18,14 +21,23 @@ export default function LoginPage() {
     const { updateToken, updateUser } = useAuth();
     const router = useRouter();
 
-    function handleLogin() {
+    async function handleLogin() {
         if (loginInfo.user == '' || loginInfo.pwd == '') {
             showNoti({ title: 'User or password not found', message: '', type: 'error   ' })
             return;
         }
-        updateToken('token-right');
-        updateUser({ id: 123, userCode: '12345', fullName: 'nva' });
-        router.push('/')
+
+        try {
+            const loginRes = await axiosCustom.post('auth/login', { username: loginInfo.user, password: loginInfo.pwd })
+            console.log(loginRes)
+            updateToken(loginRes.data.token);
+            const decoded = jwtDecode<TUser>(loginRes.data.token);
+            updateUser({ id: decoded.id, username: decoded.username, role: decoded.role });
+            router.push('/')
+        } catch (error) {
+
+        }
+
     }
     function handleKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
         if (event.key === "Enter") {

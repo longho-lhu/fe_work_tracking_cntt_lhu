@@ -71,7 +71,13 @@ export default function CalendarView() {
                 );
             } else {
                 // Thêm mới
-                setEvents([...events, newEvent]);
+                try {
+                    console.log(newEvent)
+                    // setEvents([...events, newEvent]);
+                } catch (error) {
+
+                }
+
             }
 
             form.resetFields();

@@ -1,7 +1,7 @@
 export type TUser = {
     id: number;
-    userCode: string;
-    fullName: string;
+    username: string;
+    role: string;
 }
 
 export type TNotification = {
