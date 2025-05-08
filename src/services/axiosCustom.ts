@@ -18,10 +18,10 @@ class AxiosCustom {
         const token = localStorage.getItem('wt-accessToken');
 
         // 👉 Nếu không có token → redirect luôn
-        if (!token && typeof window !== 'undefined') {
-          window.location.href = '/auth/login';
-          return Promise.reject(new Error('Chưa đăng nhập'));
-        }
+        // if (!token && typeof window !== 'undefined') {
+        //   window.location.href = '/auth/login';
+        //   return Promise.reject(new Error('Chưa đăng nhập'));
+        // }
 
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;

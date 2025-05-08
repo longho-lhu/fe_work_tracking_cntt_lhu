@@ -29,13 +29,16 @@ export default function LoginPage() {
 
         try {
             const loginRes = await axiosCustom.post('auth/login', { username: loginInfo.user, password: loginInfo.pwd })
-            console.log(loginRes)
-            updateToken(loginRes.data.token);
-            const decoded = jwtDecode<TUser>(loginRes.data.token);
-            updateUser({ id: decoded.id, username: decoded.username, role: decoded.role });
-            router.push('/')
+            if (loginRes.data.token) {
+                updateToken(loginRes.data.token);
+                const decoded = jwtDecode<TUser>(loginRes.data.token);
+                updateUser({ id: decoded.id, username: decoded.username, role: decoded.role });
+                router.push('/')
+            } else {
+                showNoti({ title: 'Login fails', message: '', type: 'error   ' })
+            }
         } catch (error) {
-
+            console.log(error)
         }
 
     }
