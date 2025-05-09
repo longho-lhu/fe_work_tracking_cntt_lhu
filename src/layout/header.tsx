@@ -5,9 +5,11 @@ import ReactCountryFlag from "react-country-flag";
 import { FaSearch } from "react-icons/fa";
 import UserSettingDropDown from "@/components/layoutComponent/UserDropDownSetting";
 import { useEffect, useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 
 const HeaderLayout = () => {
+    const { user, userDetails } = useAuth();
     const [isOpenSetting, setOpenSetting] = useState<boolean>(false);
     useEffect(() => {
         window.addEventListener("click", () => {
@@ -54,8 +56,8 @@ const HeaderLayout = () => {
                     />
                 </div>
                 <div className="wt-bell-wrap"><LuBell /></div>
-                <Avatar size="large" icon={<UserOutlined />} onClick={(event) => { openSetting(event) }} className="pointer" />
-                {isOpenSetting && <UserSettingDropDown className="wt-user-dropdown position-absolute" data={{ displayName: "Long" }} />}
+                <Avatar src={userDetails?.avatar} size="large" icon={<UserOutlined />} onClick={(event) => { openSetting(event) }} className="pointer" />
+                {isOpenSetting && <UserSettingDropDown style={{ zIndex: 1 }} className="wt-user-dropdown position-absolute" data={{ displayName: userDetails?.full_name.split(' ').pop() || "" }} />}
             </div>
         </div>
     </>

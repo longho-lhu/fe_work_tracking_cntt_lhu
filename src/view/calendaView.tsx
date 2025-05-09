@@ -2,29 +2,60 @@
 import { Calendar, momentLocalizer, SlotInfo, View } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import 'moment/locale/vi';
 import { EventType } from '@/ts/type';
 import { Form, Input, Modal, Select, TimePicker } from 'antd';
 // import dayjs from 'dayjs';
 import CustomToolbar from '@/components/calendarComponent/CustomToolbar';
 import dayjs from 'dayjs';
+import axiosCustom from '@/services/axiosCustom';
+import { useNotification } from '@/context/Notification';
 
 moment.locale('vi');
 const localizer = momentLocalizer(moment);
 
 const jobTypes = ['OFF-Làm việc offline', 'ON-Làm việc online', 'CT-Đi công tác'];
 export default function CalendarView() {
+    const { showNoti } = useNotification();
     const [events, setEvents] = useState<EventType[]>([]);
+    const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedEvent, setSelectedEvent] = useState<EventType | null>(null);
     const [modalOpen, setModalOpen] = useState(false);
     const [startDate, setStartDate] = useState<Date | null>(null);
     // const [endDate, setEndDate] = useState<Date | null>(null);
     const [currentView, setCurrentView] = useState<View>('week');
     const [form] = Form.useForm();
+
+    useEffect(() => {
+        (async () => {
+            const listCalen = await axiosCustom.get('work/get-calen');
+            console.log(listCalen.data)
+            setEvents(listCalen.data.filter((item: any) => item.status == 1).map((calen: any) => {
+                return {
+                    id: calen.id,
+                    title: calen.description,
+                    start: moment(`${calen.date} ${calen.start_time}`, 'DD-MM-YYYY HH:mm').toDate(),
+                    end: moment(`${calen.date} ${calen.end_time}`, 'DD-MM-YYYY HH:mm').toDate(),
+                    type: calen.work_type,
+                }
+            }))
+        })();
+    }, [])
+
     const handleSelectSlot = (slotInfo: SlotInfo) => {
+        const now = moment();
+        const selectedStart = moment(slotInfo.start);
+
+        if (selectedStart.isBefore(now, 'minute')) {
+            showNoti({ title: 'Lỗi', message: 'Không thể chọn thời gian trong quá khứ', type: 'info' })
+            console.warn('Không thể chọn thời gian trong quá khứ');
+            return;
+        }
+
         setStartDate(slotInfo.start);
         // setEndDate(slotInfo.end);
+
         form.setFieldsValue({
             time: [dayjs(slotInfo.start), dayjs(slotInfo.end)],
         });
@@ -45,9 +76,8 @@ export default function CalendarView() {
     };
 
     const handleOk = () => {
-        form.validateFields().then((values) => {
+        form.validateFields().then(async (values) => {
             if (!startDate) return;
-
             const start = moment(startDate)
                 .hour(values.time[0].hour())
                 .minute(values.time[0].minute())
@@ -58,6 +88,7 @@ export default function CalendarView() {
                 .toDate();
 
             const newEvent: EventType = {
+                id: values.id,
                 title: `${values.title} (${values.type})`,
                 start,
                 end,
@@ -66,18 +97,43 @@ export default function CalendarView() {
 
             if (selectedEvent) {
                 // Sửa
-                setEvents((prev) =>
-                    prev.map((ev) => (ev === selectedEvent ? newEvent : ev))
-                );
+                try {
+                    const res = await axiosCustom.put('work/update-calen', {
+                        id: selectedEvent.id,
+                        date: dayjs(newEvent.start).format("DD-MM-YYYY"),
+                        start_time: dayjs(newEvent.start).format("HH:MM"),
+                        end_time: dayjs(newEvent.end).format("HH:MM"),
+                        description: newEvent.title,
+                        work_type: newEvent.type.split("-")[0]
+                    })
+                    if (res.status === 201) {
+                        // setEvents([...events, newEvent]);
+                        setEvents((prev) =>
+                            prev.map((ev) => (ev.id === selectedEvent.id ? newEvent : ev))
+                        );
+                        showNoti({ title: 'Thành công', message: 'Đã thêm lịch thành công', type: 'success' })
+                    }
+                } catch (error: any) {
+                    showNoti({ title: 'Lỗi!', message: error.response.data.message, type: 'error' })
+                }
             } else {
                 // Thêm mới
                 try {
-                    console.log(newEvent)
-                    // setEvents([...events, newEvent]);
+                    console.log('new', newEvent)
+                    const res = await axiosCustom.post('work/reg-calen', {
+                        date: dayjs(newEvent.start).format("DD-MM-YYYY"),
+                        start_time: dayjs(newEvent.start).format("HH:MM"),
+                        end_time: dayjs(newEvent.end).format("HH:MM"),
+                        description: newEvent.title,
+                        work_type: newEvent.type.split("-")[0]
+                    })
+                    if (res.status === 201) {
+                        setEvents([...events, newEvent]);
+                        showNoti({ title: 'Thành công', message: 'Đã thêm lịch thành công', type: 'success' })
+                    }
                 } catch (error) {
-
+                    console.log(error)
                 }
-
             }
 
             form.resetFields();
@@ -110,6 +166,8 @@ export default function CalendarView() {
                     components={{
                         toolbar: CustomToolbar,
                     }}
+                    date={currentDate}
+                    onNavigate={(newDate) => setCurrentDate(newDate)}
                 />
             </div>
             <Modal

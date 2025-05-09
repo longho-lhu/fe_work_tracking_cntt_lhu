@@ -1,11 +1,12 @@
 import { Dispatch, SetStateAction } from "react";
 import { EBodyMenu } from "./enum";
-import { TNotification, TUser } from "./type";
+import { TNotification, TUser, TUserDetails } from "./type";
 
 export interface IUserData {
     user: TUser | null;
     updateUser: (user: TUser | null) => void;
     token: string;
+    userDetails: TUserDetails | null;
     updateToken: (token: string) => void;
     deleteTokenAndUser: () => void;
 }

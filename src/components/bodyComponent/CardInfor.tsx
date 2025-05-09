@@ -6,7 +6,7 @@ type TCardInfor = {
   value: number;
 }
 export default function CardInfor({ icon, title, value }: TCardInfor) {
-  return <div className="row mx-1" style={{ background: "#fff", padding: 20, borderRadius: 5, width: '100%' }}>
+  return <div className="col d-flex" style={{ background: "#fff", padding: 20, borderRadius: 5 }}>
     <div className="col">
       {icon}
     </div>

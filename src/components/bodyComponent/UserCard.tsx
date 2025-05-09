@@ -10,17 +10,10 @@ import axiosCustom from "@/services/axiosCustom";
 import { TUserDetails } from "@/ts/type";
 
 export default function UserCard() {
-  const { user } = useAuth();
-  const [userDetals, setUserDetails] = useState<TUserDetails | null>(null);
-  useEffect(() => {
-    (async () => {
-      const userDetails = await axiosCustom.get('user/details');
-      setUserDetails(userDetails.data)
-    })();
-  }, [])
+  const { user, userDetails } = useAuth();
   return <div className="wt-usecard-container text-center">
-    <Avatar src={userDetals?.avatar} className="" size={64} icon={<UserOutlined />} />
-    <div className="display-name">{userDetals?.full_name || user?.username}</div>
+    <Avatar src={userDetails?.avatar} className="" size={64} icon={<UserOutlined />} />
+    <div className="display-name">{userDetails?.full_name || user?.username}</div>
     <div className="status d-flex align-items-center justify-content-center"> <GoDotFill color="#5DD099" />Online</div>
     <div className="d-flex gap-3 justify-content-center">
       <div className="user-setting-icon">
